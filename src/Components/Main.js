@@ -3,37 +3,37 @@ import ResidentsList from './ResidentsList';
 import Search from './Search';
 import Error from './Error';
 
-function Main(STUDENTS) {
+function Main({STUDENTS}) {
     const [residents, setResidents] = useState(JSON.parse(localStorage.getItem('residents')) || []);
     const [error, setError] = useState([]);
     const addResidents = (name, date) => {
         const student = STUDENTS.find(student => student.name.toLowerCase() === name.toLowerCase());
-        if (!student) {
+
+        if (!name || !date) {
+            setError(['Both fields are required']);
+        } else if (!student) {
             setError(`Sorry, ${name} is not a student here` );
         } else if (!validateStudent(date, student.validity)) {
             setError(`Sorry, ${name}'s validity is expired`);
         }else {
-            const newResidents = [...residents, ...residents];
+            const newResidents = [...residents, name];
             setResidents(newResidents);
-
+            setError(null);
             localStorage.setItem('residents', JSON.stringify(newResidents));
+            return true;
         }
     };
 
     const validateStudent = (joiningDate, validityDate) => {
-        const dateNow = new Date();
-        const today = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate());
-        const [year, month, day] = joiningDate.split('_');
-        const [yyy, mm, dd] = validityDate.split('_');
-        const maxValid = new Date(yyy, mm - 1, dd);
-        const selected = new Date(year, month - 1, day);
-        return (maxValid >= selected) && (maxValid  >= today);
+        const joiningDateObj = new Date(joiningDate);
+        const validityDateObj = new Date(validityDate);
+        return validityDateObj >= joiningDateObj;
     };
 
   return (
       <div className="layout-column justify-content-center align-items-center w-50 mx-auto">
         <Search addResidents={addResidents} />
-        <Error messages={error} />
+        <Error message={error} />
         <ResidentsList residents={residents} />
       </div>
   );

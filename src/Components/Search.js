@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 // `joiningDate` && `validityDate` format "yyyy-mm-dd"
 
-function Search(addResidents) {
+function Search({addResidents}) {
 	const [name, setName] = useState('');
 	const [date, setDate] = useState('');
 
@@ -18,7 +18,7 @@ function Search(addResidents) {
 					<input id="joiningDate" data-testid="joiningDate" type="date" className="mr-30 mt-10" value={date} onChange={(e) => setDate(e.target.value)} />
 				</div>
 			</label>
-			<button type="button" data-testid="addBtn" className="small mb-0" onClick={() => addResidents(name, date) }>Add</button>
+			<button type="button" data-testid="addBtn" className="small mb-0" onClick={() => { if(addResidents(name, date)) { setName(''); setDate(''); }}}>Add</button>
 		</div>
 	);
 }
