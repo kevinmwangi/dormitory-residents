@@ -10,13 +10,18 @@ function Main({STUDENTS}) {
         const student = STUDENTS.find(student => student.name.toLowerCase() === name.toLowerCase());
 
         if (!name || !date) {
-            setError(['Both fields are required']);
+            setError('Please enter all the fields');
         } else if (!student) {
-            setError(`Sorry, ${name} is not a student here` );
+            setError(`Sorry, ${name} is not a verified student!` );
+            return true;
+        } else if (residents.some(resident => resident.name === name)) {
+            setError([`Sorry, ${name} is already present in the residents list!`]);
+            return true;
         } else if (!validateStudent(date, student.validity)) {
-            setError(`Sorry, ${name}'s validity is expired`);
+            setError(`Sorry, ${name}'s validity has Expired!`);
+            return true;
         }else {
-            const newResidents = [...residents, name];
+            const newResidents = [...residents, {name}];
             setResidents(newResidents);
             setError(null);
             localStorage.setItem('residents', JSON.stringify(newResidents));

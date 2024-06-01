@@ -5,11 +5,7 @@ function Error({message}) {
 		return null;
 	}
 
-	return (
-		<div data-testid="errorMsg" className="alert error mt-20 slide-up-fade-in">
-			<p>Error Message: {message}</p>
-		</div>
-	)
+	return <div data-testid="errorMsg" className="alert error mt-20 slide-up-fade-in">{message}</div>
 }
 
 export default Error;

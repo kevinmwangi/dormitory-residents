@@ -6,7 +6,7 @@ function ResidentsList({residents}) {
 			<div className="font-weight-bold text-center">Residents List</div>
 			<ul className="mt-10 styled w-50 mx-auto" data-testid="residentsNameList">
 				{residents.map((resident, index) => (
-					<li key={index} className="slide-up-fade-in">{resident}</li>
+					<li key={index} className="slide-up-fade-in">{resident.name}</li>
 				))}
 
 			</ul>
