@@ -4,7 +4,7 @@ import Search from './Search';
 import Error from './Error';
 
 function Main(STUDENTS) {
-    const [residents, setResidents] = useState('');
+    const [residents, setResidents] = useState(JSON.parse(localStorage.getItem('residents')) || []);
     const [error, setError] = useState([]);
     const addResidents = (name, date) => {
         const student = STUDENTS.find(student => student.name.toLowerCase() === name.toLowerCase());
@@ -13,7 +13,10 @@ function Main(STUDENTS) {
         } else if (!validateStudent(date, student.validity)) {
             setError(`Sorry, ${name}'s validity is expired`);
         }else {
-            setResidents([...residents, name]);
+            const newResidents = [...residents, ...residents];
+            setResidents(newResidents);
+
+            localStorage.setItem('residents', JSON.stringify(newResidents));
         }
     };
 
@@ -30,7 +33,7 @@ function Main(STUDENTS) {
   return (
       <div className="layout-column justify-content-center align-items-center w-50 mx-auto">
         <Search addResidents={addResidents} />
-        <Error message={error} />
+        <Error messages={error} />
         <ResidentsList residents={residents} />
       </div>
   );
